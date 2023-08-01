@@ -1720,7 +1720,13 @@ do
 				metatable.State = tonumber(value)
 				
 				value = self:updateSlider(metatable, nil, nil, min, max, value)
-				callback(value)
+
+				if callback then
+					callback(metatable.State, function(...)
+						self:updateSlider(metatable, ...)
+					end)
+				end
+
 				
 				utility:Wait()
 			end
@@ -2158,6 +2164,7 @@ do
 	end
 	
 	function section:updateSlider(slider, title, value, min, max, lvalue)
+		local metatoggle = slider
 		local thecall = slider.Callback
 		slider = slider.Frame
 		
@@ -2166,7 +2173,7 @@ do
 		end
 		
 		if thecall ~= nil then
-			thecall()
+			thecall(metatoggle.State)
 		end
 		
 		local bar = slider.Slider.Bar
@@ -2267,5 +2274,5 @@ do
 	end
 end
 
-print("new21")
+print("new25")
 return library
