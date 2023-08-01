@@ -785,11 +785,11 @@ do
 		--self:Resize()
 		
 		local active = default
-		self:updateToggle(metatable, nil, active)
+		self:updateToggle(metatable, nil, active, false)
 		
 		toggle.MouseButton1Click:Connect(function()
 			active = not active
-			self:updateToggle(metatable, nil, active)
+			self:updateToggle(metatable, nil, active, false)
 			metatable.State = not metatable.State
 			if callback then
 				callback(active, function(...)
@@ -2063,11 +2063,11 @@ do
 		button.Title.Text = title
 	end
 	
-	function section:updateToggle(toggle, title, value)
+	function section:updateToggle(toggle, title, value, callbackvalue)
 		local thecall = toggle.Callback
 		toggle = toggle.Frame
 
-		if thecall then
+		if thecall and callbackvalue ~= nil and callbackvalue == true then
 			thecall()
 		end
 		local position = {
@@ -2273,5 +2273,5 @@ do
 	end
 end
 
-print("new3")
+print("new5")
 return library
