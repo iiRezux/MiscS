@@ -1698,14 +1698,14 @@ do
 		local callback = function(value)
 			if callback then
 				callback(value, function(...)
-					self:updateSlider(slider, ...)
+					self:updateSlider(metatable, ...)
 				end)
 			end
 		end
 
         metatable.State = value
 		
-		self:updateSlider(slider, nil, value, min, max)
+		self:updateSlider(metatable, nil, value, min, max)
 		
 		utility:DraggingEnded(function()
 			dragging = false
@@ -1719,7 +1719,7 @@ do
 
 				metatable.State = tonumber(value)
 				
-				value = self:updateSlider(slider, nil, nil, min, max, value)
+				value = self:updateSlider(metatable, nil, nil, min, max, value)
 				callback(value)
 				
 				utility:Wait()
@@ -1731,7 +1731,7 @@ do
 		
 		textbox.FocusLost:Connect(function()
 			if not tonumber(textbox.Text) then
-				value = self:updateSlider(slider, nil, default or min, min, max)
+				value = self:updateSlider(metatable, nil, default or min, min, max)
 				callback(value)
 			end
 		end)
@@ -1742,7 +1742,7 @@ do
 			if not allowed[text] and not tonumber(text) then
 				textbox.Text = text:sub(1, #text - 1)
 			elseif not allowed[text] then	
-				value = self:updateSlider(slider, nil, tonumber(text) or value, min, max)
+				value = self:updateSlider(metatable, nil, tonumber(text) or value, min, max)
 				callback(value)
 			end
 		end)
@@ -2158,7 +2158,7 @@ do
 	end
 	
 	function section:updateSlider(slider, title, value, min, max, lvalue)
-		slider = self:getModule(slider)
+		slider = slider.Frame
 		
 		if title then
 			slider.Title.Text = title
@@ -2266,5 +2266,5 @@ do
 	end
 end
 
-print("new19")
+print("new20")
 return library
