@@ -2158,14 +2158,15 @@ do
 	end
 	
 	function section:updateSlider(slider, title, value, min, max, lvalue)
+		local thecall = slider.Callback
 		slider = slider.Frame
 		
 		if title then
 			slider.Title.Text = title
 		end
 		
-		if slider.Callback ~= nil then
-			slider.Callback()
+		if thecall ~= nil then
+			thecall()
 		end
 		
 		local bar = slider.Slider.Bar
@@ -2266,5 +2267,5 @@ do
 	end
 end
 
-print("new20")
+print("new21")
 return library
