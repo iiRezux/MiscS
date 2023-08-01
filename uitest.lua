@@ -785,15 +785,15 @@ do
 		--self:Resize()
 		
 		local active = default
-		self:updateToggle(toggle, nil, active)
+		self:updateToggle(metatable, nil, active)
 		
 		toggle.MouseButton1Click:Connect(function()
 			active = not active
-			self:updateToggle(toggle, nil, active)
+			self:updateToggle(metatable, nil, active)
 			metatable.State = not metatable.State
 			if callback then
 				callback(active, function(...)
-					self:updateToggle(toggle, ...)
+					self:updateToggle(metatable, ...)
 				end)
 			end
 		end)
@@ -2064,8 +2064,11 @@ do
 	end
 	
 	function section:updateToggle(toggle, title, value)
-		if toggle.Callback then
-			toggle.Callback()
+		local thecall = toggle.Callback
+		toggle = toggle.Frame
+
+		if thecall then
+			thecall()
 		end
 		local position = {
 			In = UDim2.new(0, 2, 0.5, -6),
@@ -2270,5 +2273,5 @@ do
 	end
 end
 
-print("new")
+print("new2")
 return library
