@@ -2021,7 +2021,11 @@ do
 		local size = (4 * padding) + self.container.Title.AbsoluteSize.Y -- offset
 		
 		for i, module in pairs(self.modules) do
-			size = size + module.AbsoluteSize.Y + padding
+			if type(module) == "table" then
+				size = size + module.Frame.AbsoluteSize.Y + padding
+			else
+				size = size + module.AbsoluteSize.Y + padding
+			end
 		end
 		
 		if smooth then
@@ -2273,5 +2277,5 @@ do
 	end
 end
 
-print("new16")
+print("new17")
 return library
