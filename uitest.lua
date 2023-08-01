@@ -778,7 +778,8 @@ do
 			Flag = flag,
 			Callback = callback,
 			Frame = toggle,
-			State = default or false
+			State = default or false,
+			Type = "Toggle"
 		}
 
 		table.insert(self.modules, metatable)
@@ -2277,5 +2278,5 @@ do
 	end
 end
 
-print("new17")
+print("new18")
 return library
