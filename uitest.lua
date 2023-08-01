@@ -784,15 +784,13 @@ do
 		table.insert(self.modules, toggle)
 		--self:Resize()
 		
-		local active = default
-		self:updateToggle(metatable, nil, active, false)
+		self:updateToggle(metatable, nil, metatable.State, false)
 		
 		toggle.MouseButton1Click:Connect(function()
-			active = not active
-			self:updateToggle(metatable, nil, active, false)
+			self:updateToggle(metatable, nil, metatable.State, false)
 			metatable.State = not metatable.State
 			if callback then
-				callback(active, function(...)
+				callback(metatable.State, function(...)
 					self:updateToggle(metatable, ...)
 				end)
 			end
@@ -2275,5 +2273,5 @@ do
 	end
 end
 
-print("new6")
+print("new10")
 return library
