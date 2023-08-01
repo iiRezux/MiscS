@@ -778,7 +778,7 @@ do
 			Flag = flag,
 			Callback = callback,
 			Frame = toggle,
-			State = default
+			State = default or false
 		}
 
 		table.insert(self.modules, toggle)
