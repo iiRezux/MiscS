@@ -2065,7 +2065,9 @@ do
 	
 	function section:updateToggle(toggle, title, value, callbackvalue)
 		local thecall = toggle.Callback
+		local metatoggle = toggle
 		toggle = toggle.Frame
+		metatoggle.State = not metatoggle.State
 
 		if thecall and callbackvalue ~= nil and callbackvalue == true then
 			thecall()
@@ -2273,5 +2275,5 @@ do
 	end
 end
 
-print("new5")
+print("new6")
 return library
