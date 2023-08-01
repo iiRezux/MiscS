@@ -2065,7 +2065,7 @@ do
 		local thecall = toggle.Callback
 		local metatoggle = toggle
 		toggle = toggle.Frame
-		metatoggle.State = not metatoggle.State
+		metatoggle.State = value
 
 		if thecall and callbackvalue ~= nil and callbackvalue == true then
 			thecall()
@@ -2273,5 +2273,5 @@ do
 	end
 end
 
-print("new11")
+print("new12")
 return library
