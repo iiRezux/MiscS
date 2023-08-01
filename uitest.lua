@@ -787,8 +787,8 @@ do
 		self:updateToggle(metatable, nil, metatable.State, false)
 		
 		toggle.MouseButton1Click:Connect(function()
-			self:updateToggle(metatable, nil, metatable.State, false)
 			metatable.State = not metatable.State
+			self:updateToggle(metatable, nil, metatable.State, false)
 			if callback then
 				callback(metatable.State, function(...)
 					self:updateToggle(metatable, ...)
@@ -2273,5 +2273,5 @@ do
 	end
 end
 
-print("new10")
+print("new11")
 return library
