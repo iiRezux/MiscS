@@ -791,7 +791,7 @@ do
 			self:updateToggle(metatable, nil, metatable.State, false)
 			if callback then
 				callback(metatable.State, function(...)
-					self:updateToggle(metatable, nil, metatable.State, false)
+					self:updateToggle(metatable, ...)
 				end)
 			end
 		end)
@@ -2068,7 +2068,7 @@ do
 		metatoggle.State = value
 
 		if thecall and callbackvalue ~= nil and callbackvalue == true then
-			thecall()
+			thecall(metatoggle.State)
 		end
 		local position = {
 			In = UDim2.new(0, 2, 0.5, -6),
@@ -2273,5 +2273,5 @@ do
 	end
 end
 
-print("new14")
+print("new15")
 return library
