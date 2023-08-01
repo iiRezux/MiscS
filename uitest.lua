@@ -781,7 +781,7 @@ do
 			State = default or false
 		}
 
-		table.insert(self.modules, toggle)
+		table.insert(self.modules, metatable)
 		--self:Resize()
 		
 		self:updateToggle(metatable, nil, metatable.State, false)
@@ -2273,5 +2273,5 @@ do
 	end
 end
 
-print("new15")
+print("new16")
 return library
