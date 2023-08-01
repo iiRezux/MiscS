@@ -790,9 +790,7 @@ do
 			metatable.State = not metatable.State
 			self:updateToggle(metatable, nil, metatable.State, false)
 			if callback then
-				callback(metatable.State, function(...)
-					self:updateToggle(metatable, ...)
-				end)
+				callback(metatable.State)
 			end
 		end)
 		
@@ -2273,5 +2271,5 @@ do
 	end
 end
 
-print("new12")
+print("new13")
 return library
