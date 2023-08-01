@@ -1672,20 +1672,16 @@ do
 			})
 		})
 
-        if flag ~= nil and flag ~= "" then
-            utility:Create("StringValue", {
-                Name = "Flag",
-                Parent = slider,
-                Value = flag
-            })
-            utility:Create("StringValue", {
-                Name = "Option",
-                Parent = slider.Flag,
-                Value = ""
-            })
-        end
+        local metatable = {
+			Title = title,
+			Flag = flag,
+			Callback = callback,
+			Frame = slider,
+			State = default or min,
+			Type = "Slider"
+		}
 		
-		table.insert(self.modules, slider)
+		table.insert(self.modules, metatable)
 		--self:Resize()
 		
 		local allowed = {
@@ -1707,9 +1703,7 @@ do
 			end
 		end
 
-        if slider:FindFirstChild("Flag") then
-            slider.Flag.Option.Value = tostring(value)
-        end
+        metatable.State = value
 		
 		self:updateSlider(slider, nil, value, min, max)
 		
@@ -1723,9 +1717,7 @@ do
 			while dragging do
 				utility:Tween(circle, {ImageTransparency = 0}, 0.1)
 
-                if slider:FindFirstChild("Flag") then
-                    slider.Flag.Option.Value = tostring(value)
-                end
+				metatable.State = tonumber(value)
 				
 				value = self:updateSlider(slider, nil, nil, min, max, value)
 				callback(value)
@@ -1755,7 +1747,7 @@ do
 			end
 		end)
 
-		return slider
+		return metatable
 	end
 	
 	function section:addDropdown(title, list, flag, callback)
@@ -1839,19 +1831,6 @@ do
 				})
 			})
 		})
-
-        if flag ~= nil and flag ~= "" then
-            utility:Create("StringValue", {
-                Name = "Flag",
-                Parent = dropdown,
-                Value = flag
-            })
-            utility:Create("StringValue", {
-                Name = "Option",
-                Parent = dropdown.Flag,
-                Value = ""
-            })
-        end
 		
 		table.insert(self.modules, dropdown)
 		--self:Resize()
@@ -1860,6 +1839,15 @@ do
 		local focused
 		
 		list = list or {}
+
+		local metatable = {
+			Title = title,
+			Flag = flag,
+			Callback = callback,
+			Frame = dropdown,
+			State = default or false,
+			Type = "Dropdown"
+		}
 		
 		search.Button.MouseButton1Click:Connect(function()
 			if search.Button.Rotation == 0 then
@@ -1885,10 +1873,6 @@ do
 			if focused then
 				local list = utility:Sort(search.TextBox.Text, list)
 				list = #list ~= 0 and list
-                
-                if dropdown:FindFirstChild("Flag") then
-                    dropdown.Flag.Option.Value = dropdown.Search.TextBox.Text
-                end
 				
 				self:updateDropdown(dropdown, nil, list, callback)
 			end
@@ -2178,6 +2162,10 @@ do
 		
 		if title then
 			slider.Title.Text = title
+		end
+		
+		if slider.Callback ~= nil then
+			slider.Callback()
 		end
 		
 		local bar = slider.Slider.Bar
