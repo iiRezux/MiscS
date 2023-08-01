@@ -2041,7 +2041,7 @@ do
 		end
 		
 		for i, module in pairs(self.modules) do
-			if module.Frame ~= nil then
+			if type(module) == "table" and module.Frame ~= nil then
 				if (module.Frame:FindFirstChild("Title") or module.Frame:FindFirstChild("TextBox", true)).Text == info then
 					return module
 				end
@@ -2064,8 +2064,6 @@ do
 	end
 	
 	function section:updateToggle(toggle, title, value)
-		toggle = self:getModule(toggle)
-		toggle = toggle.Frame or toggle
 		if toggle.Callback then
 			toggle.Callback()
 		end
@@ -2272,4 +2270,5 @@ do
 	end
 end
 
+print("new")
 return library
