@@ -2166,6 +2166,7 @@ do
 	end
 	
 	function section:updateSlider(slider, title, value, min, max, lvalue)
+		print("value printed: "..tostring(value))
 		local metatoggle = slider
 		local thecall = slider.Callback
 		slider = slider.Frame
@@ -2277,5 +2278,5 @@ do
 	end
 end
 
-print("new28")
+print("new29")
 return library
