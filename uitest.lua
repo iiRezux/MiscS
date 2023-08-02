@@ -1677,7 +1677,7 @@ do
 			Flag = flag,
 			Callback = callback,
 			Frame = slider,
-			State = default or 0,
+			State = default or min,
 			Min = min,
 			Max = max,
 			Type = "Slider"
@@ -1735,7 +1735,7 @@ do
 		textbox.FocusLost:Connect(function()
 			if not tonumber(textbox.Text) then
 				metatable.State = tonumber(value)
-				value = self:updateSlider(metatable, nil, value, min, max)
+				value = self:updateSlider(metatable, nil, default or min, min, max)
 				callback(value)
 			end
 		end)
@@ -2163,7 +2163,7 @@ do
 	end
 	
 	function section:updateSlider(slider, title, value, min, max, lvalue)
-		local metatoggle = slider
+		--local metatoggle = slider
 		local thecall = slider.Callback
 		slider = slider.Frame
 		value = value or min
@@ -2171,8 +2171,6 @@ do
 		if title then
 			slider.Title.Text = title
 		end
-
-		metatoggle.State = value
 		
 		if thecall ~= nil then
 			thecall(value)
@@ -2281,5 +2279,5 @@ do
 	end
 end
 
-print("new5")
+print("new6")
 return library
