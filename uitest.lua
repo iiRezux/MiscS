@@ -1678,6 +1678,8 @@ do
 			Callback = callback,
 			Frame = slider,
 			State = default or 0,
+			Min = min,
+			Max = max,
 			Type = "Slider"
 		}
 		
@@ -2278,5 +2280,5 @@ do
 	end
 end
 
-print("new30")
+print("new1")
 return library
