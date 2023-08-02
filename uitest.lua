@@ -2257,11 +2257,7 @@ do
 			
 			button.MouseButton1Click:Connect(function()
 				metadropdwn.Option = dropdown.Search.TextBox.Text
-				if callback then
-					callback(value, function(...)
-						self:updateDropdown(metadropdwn, ...)
-					end)	
-				end
+				self:updateDropdown(metadropdwn, value, nil, thecall)
 			end)
 			
 			entries = entries + 1
@@ -2289,5 +2285,5 @@ do
 	end
 end
 
-print("new8")
+print("new10")
 return library
