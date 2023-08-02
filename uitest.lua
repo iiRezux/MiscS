@@ -2262,8 +2262,6 @@ do
 						self:updateDropdown(metadropdwn, ...)
 					end)	
 				end
-
-				self:updateDropdown(metadropdwn, value, nil, callback)
 			end)
 			
 			entries = entries + 1
@@ -2291,5 +2289,5 @@ do
 	end
 end
 
-print("new7")
+print("new8")
 return library
