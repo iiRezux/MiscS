@@ -1720,8 +1720,8 @@ do
 				utility:Tween(circle, {ImageTransparency = 0}, 0.1)
 
 				metatable.State = tonumber(value)
-				
-				value = self:updateSlider(metatable, nil, value, min, max, value)
+
+				value = self:updateSlider(metatable, nil, nil, min, max, value)
 
 				callback(value)
 				
@@ -2281,5 +2281,5 @@ do
 	end
 end
 
-print("new4")
+print("new5")
 return library
