@@ -1694,7 +1694,7 @@ do
 		local textbox = slider.TextBox
 		local circle = slider.Slider.Bar.Fill.Circle
 		
-		local value = default or 0
+		local value = default or min
 		local dragging, last
 		
 		local callback = function(value)
@@ -1723,7 +1723,7 @@ do
 				
 				value = self:updateSlider(metatable, nil, metatable.State, min, max, value)
 
-				callback(metatable.State)
+				callback(value)
 				
 				utility:Wait()
 			end
@@ -1735,7 +1735,7 @@ do
 		textbox.FocusLost:Connect(function()
 			if not tonumber(textbox.Text) then
 				metatable.State = tonumber(value)
-				value = self:updateSlider(metatable, nil, metatable.State or min, min, max)
+				value = self:updateSlider(metatable, nil, metatable.State, min, max)
 				callback(value)
 			end
 		end)
@@ -2279,5 +2279,5 @@ do
 	end
 end
 
-print("new1")
+print("new2")
 return library
