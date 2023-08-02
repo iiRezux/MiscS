@@ -1861,15 +1861,15 @@ do
 		
 		search.Button.MouseButton1Click:Connect(function()
 			if search.Button.Rotation == 0 then
-				self:updateDropdown(metatable, nil, list, callback)
+				self:updateDropdown(metatable, nil, list)
 			else
-				self:updateDropdown(metatable, nil, nil, callback)
+				self:updateDropdown(metatable, nil, nil)
 			end
 		end)
 		
 		search.TextBox.Focused:Connect(function()
 			if search.Button.Rotation == 0 then
-				self:updateDropdown(metatable, nil, list, callback)
+				self:updateDropdown(metatable, nil, list)
 			end
 			
 			focused = true
@@ -1882,10 +1882,9 @@ do
 		search.TextBox:GetPropertyChangedSignal("Text"):Connect(function()
 			if focused then
 				local list = utility:Sort(search.TextBox.Text, list)
-				print("choosed: "..search.TextBox.Text)
 				list = #list ~= 0 and list
 				
-				self:updateDropdown(metatable, nil, list, callback)
+				self:updateDropdown(metatable, nil, list)
 			end
 		end)
 		
@@ -2203,7 +2202,7 @@ do
 		return value
 	end
 	
-	function section:updateDropdown(dropdown, title, list, callback)
+	function section:updateDropdown(dropdown, title, list)
 		local metadropdwn = dropdown
 		local thecall = metadropdwn.Callback
 		dropdown = metadropdwn.Frame
@@ -2214,8 +2213,8 @@ do
 
 		if thecall and title then
 			if dropdown.Search.TextBox.Text ~= metadropdwn.Title and dropdown.Search.TextBox.Text ~= "" then
-				metadropdwn.Option = dropdown.Search.TextBox.Text
-				thecall(metadropdwn.Option)
+				metadropdwn.State = dropdown.Search.TextBox.Text
+				thecall(metadropdwn.State)
 			end
 		end
 
@@ -2256,8 +2255,8 @@ do
 			})
 			
 			button.MouseButton1Click:Connect(function()
-				metadropdwn.Option = dropdown.Search.TextBox.Text
-				self:updateDropdown(metadropdwn, value, nil, thecall)
+				metadropdwn.State = dropdown.Search.TextBox.Text
+				self:updateDropdown(metadropdwn, value, nil)
 			end)
 			
 			entries = entries + 1
@@ -2285,5 +2284,5 @@ do
 	end
 end
 
-print("new12")
+print("new13")
 return library
