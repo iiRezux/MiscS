@@ -2212,15 +2212,11 @@ do
 			dropdown.Search.TextBox.Text = title
 		end
 
-		local value
-		if thecall then
-			if dropdown.Search.TextBox.Text == metadropdwn.Title then
-				value = nil
-			else
+		if thecall and title then
+			if dropdown.Search.TextBox.Text ~= metadropdwn.Title and dropdown.Search.TextBox.Text ~= "" then
 				metadropdwn.Option = dropdown.Search.TextBox.Text
-				value = dropdown.Search.TextBox.Text
+				thecall(metadropdwn.Option)
 			end
-			thecall(value)
 		end
 
 		local entries = 0
@@ -2295,5 +2291,5 @@ do
 	end
 end
 
-print("new6")
+print("new7")
 return library
