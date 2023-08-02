@@ -1677,7 +1677,7 @@ do
 			Flag = flag,
 			Callback = callback,
 			Frame = slider,
-			State = default or min,
+			State = default or 0,
 			Type = "Slider"
 		}
 		
@@ -1692,7 +1692,7 @@ do
 		local textbox = slider.TextBox
 		local circle = slider.Slider.Bar.Fill.Circle
 		
-		local value = default or min
+		local value = default or 0
 		local dragging, last
 		
 		local callback = function(value)
@@ -2166,10 +2166,10 @@ do
 	end
 	
 	function section:updateSlider(slider, title, value, min, max, lvalue)
-		print("value printed: "..tostring(value))
 		local metatoggle = slider
 		local thecall = slider.Callback
 		slider = slider.Frame
+		value = value or 0
 		
 		if title then
 			slider.Title.Text = title
@@ -2278,5 +2278,5 @@ do
 	end
 end
 
-print("new29")
+print("new30")
 return library
