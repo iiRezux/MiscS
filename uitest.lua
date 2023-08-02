@@ -1861,15 +1861,15 @@ do
 		
 		search.Button.MouseButton1Click:Connect(function()
 			if search.Button.Rotation == 0 then
-				self:updateDropdown(dropdown, nil, list, callback)
+				self:updateDropdown(metatable, nil, list, callback)
 			else
-				self:updateDropdown(dropdown, nil, nil, callback)
+				self:updateDropdown(metatable, nil, nil, callback)
 			end
 		end)
 		
 		search.TextBox.Focused:Connect(function()
 			if search.Button.Rotation == 0 then
-				self:updateDropdown(dropdown, nil, list, callback)
+				self:updateDropdown(metatable, nil, list, callback)
 			end
 			
 			focused = true
@@ -1885,7 +1885,7 @@ do
 				print("choosed: "..search.TextBox.Text)
 				list = #list ~= 0 and list
 				
-				self:updateDropdown(dropdown, nil, list, callback)
+				self:updateDropdown(metatable, nil, list, callback)
 			end
 		end)
 		
@@ -2263,11 +2263,11 @@ do
 				metadropdwn.Option = dropdown.Search.TextBox.Text
 				if callback then
 					callback(value, function(...)
-						self:updateDropdown(dropdown, ...)
+						self:updateDropdown(metadropdwn, ...)
 					end)	
 				end
 
-				self:updateDropdown(dropdown, value, nil, callback)
+				self:updateDropdown(metadropdwn, value, nil, callback)
 			end)
 			
 			entries = entries + 1
@@ -2295,5 +2295,5 @@ do
 	end
 end
 
-print("new5")
+print("new6")
 return library
