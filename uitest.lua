@@ -1721,7 +1721,7 @@ do
 
 				metatable.State = tonumber(value)
 				
-				value = self:updateSlider(metatable, nil, metatable.State, min, max, value)
+				value = self:updateSlider(metatable, nil, value, min, max, value)
 
 				callback(value)
 				
@@ -1735,7 +1735,7 @@ do
 		textbox.FocusLost:Connect(function()
 			if not tonumber(textbox.Text) then
 				metatable.State = tonumber(value)
-				value = self:updateSlider(metatable, nil, metatable.State, min, max)
+				value = self:updateSlider(metatable, nil, value, min, max)
 				callback(value)
 			end
 		end)
@@ -2166,14 +2166,16 @@ do
 		local metatoggle = slider
 		local thecall = slider.Callback
 		slider = slider.Frame
-		value = value or 0
+		value = value or min
 		
 		if title then
 			slider.Title.Text = title
 		end
+
+		metatoggle.State = value
 		
 		if thecall ~= nil then
-			thecall(metatoggle.State)
+			thecall(value)
 		end
 		
 		local bar = slider.Slider.Bar
@@ -2279,5 +2281,5 @@ do
 	end
 end
 
-print("new2")
+print("new4")
 return library
