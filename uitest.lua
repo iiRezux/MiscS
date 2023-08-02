@@ -785,16 +785,12 @@ do
 		table.insert(self.modules, metatable)
 		--self:Resize()
 		
-		self:updateToggle(metatable, nil, metatable.State, false)
+		self:updateToggle(metatable, nil, metatable.State)
 		
 		toggle.MouseButton1Click:Connect(function()
 			metatable.State = not metatable.State
-			self:updateToggle(metatable, nil, metatable.State, false)
-			if callback then
-				callback(metatable.State, function(...)
-					self:updateToggle(metatable, ...)
-				end)
-			end
+			self:updateToggle(metatable, nil, metatable.State)
+			metatable.Callback(metatable.State)
 		end)
 		
 		return metatable
@@ -853,20 +849,16 @@ do
 			})
 		})
 
-        if flag ~= nil and flag ~= "" then
-            utility:Create("StringValue", {
-                Name = "Flag",
-                Parent = textbox,
-                Value = flag
-            })
-            utility:Create("StringValue", {
-                Name = "Option",
-                Parent = textbox.Flag,
-                Value = ""
-            })
-        end
+        local metatable = {
+			Title = title,
+			Flag = flag,
+			Callback = callback,
+			Frame = textbox,
+			State = default or "",
+			Type = "Textbox"
+		}
 		
-		table.insert(self.modules, textbox)
+		table.insert(self.modules, metatable)
 		--self:Resize()
 		
 		local button = textbox.Button
@@ -890,20 +882,20 @@ do
 		end)
 		
 		input:GetPropertyChangedSignal("Text"):Connect(function()
-            textbox.Flag.Option.Value = input.Text
+            metatable.State = input.Text
 			
 			if button.ImageTransparency == 0 and (button.Size == UDim2.new(0, 200, 0, 16) or button.Size == UDim2.new(0, 100, 0, 16)) then -- i know, i dont like this either
 				utility:Pop(button, 10)
 			end
 			if callback then
 				callback(input.Text, nil, function(...)
-					self:updateTextbox(textbox, ...)
+					self:updateTextbox(metatable, ...)
 				end)
 			end
 		end)
 		
 		input.FocusLost:Connect(function()
-            textbox.Flag.Option.Value = input.Text
+            textbox.State = input.Text
 			
 			input.TextXAlignment = Enum.TextXAlignment.Center
 			
@@ -915,12 +907,12 @@ do
 			
 			if callback then
 				callback(input.Text, true, function(...)
-					self:updateTextbox(textbox, ...)
+					self:updateTextbox(metatable, ...)
 				end)
 			end
 		end)
 		
-		return textbox
+		return metatable
 	end
 	
 	function section:addKeybind(title, default, flag, callback, changedCallback)
@@ -975,21 +967,16 @@ do
 			})
 		})
 
-        if flag ~= nil and flag ~= "" then
-            utility:Create("StringValue", {
-                Name = "Flag",
-                Parent = keybind,
-                Value = flag
-            })
-
-            utility:Create("StringValue", {
-                Name = "Option",
-                Parent = keybind.Flag,
-                Value = ""
-            })
-        end
+        local metatable = {
+			Title = title,
+			Flag = flag,
+			Callback = callback,
+			Frame = keybind,
+			State = default.Name or "None",
+			Type = "Keybind"
+		}
 		
-		table.insert(self.modules, keybind)
+		table.insert(self.modules, metatable)
 		--self:Resize()
 		
 		local text = keybind.Button.Text
@@ -1006,13 +993,14 @@ do
 			
 			if callback then
 				callback(function(...)
-					self:updateKeybind(keybind, ...)
+					self:updateKeybind(metatable, ...)
 				end)
 			end
 		end}
 		
 		if default and callback then
-			self:updateKeybind(keybind, nil, default)
+			metatable.State = default.Name
+			self:updateKeybind(metatable, nil, default.Name)
 		end
 		
 		keybind.MouseButton1Click:Connect(function()
@@ -1020,7 +1008,8 @@ do
 			animate()
 			
 			if self.binds[keybind].connection then -- unbind
-				return self:updateKeybind(keybind)
+				metatable.State = "None"
+				return self:updateKeybind(metatable)
 			end
 			
 			if text.Text == "None" then -- new bind
@@ -1028,15 +1017,13 @@ do
 				
 				local key = utility:KeyPressed()
 				
-                if keybind:FindFirstChild("Flag") ~= nil then
-                    keybind.Flag.Option.Value = tostring(key.KeyCode)
-                end
-				self:updateKeybind(keybind, nil, key.KeyCode)
+                metatable.State = key.KeyCode.Name
+				self:updateKeybind(metatable, nil, key.KeyCode.Name)
 				animate()
 				
 				if changedCallback then
 					changedCallback(key, function(...)
-						self:updateKeybind(keybind, ...)
+						self:updateKeybind(metatable, ...)
 					end)
 				end
 			end
@@ -1716,11 +1703,9 @@ do
 			
 			while dragging do
 				utility:Tween(circle, {ImageTransparency = 0}, 0.1)
-
-				value = self:updateSlider(metatable, nil, metatable.State, min, max)
-
-				metatable.State = tonumber(value)
-
+				
+				value = self:updateSlider(metatable, nil, nil, min, max, value)
+				metatable.State = value
 				callback(value)
 				
 				utility:Wait()
@@ -1732,8 +1717,8 @@ do
 		
 		textbox.FocusLost:Connect(function()
 			if not tonumber(textbox.Text) then
-				value = self:updateSlider(metatable, nil, metatable.State, min, max)
-				metatable.State = tonumber(value)
+				value = self:updateSlider(metatable, nil, default or min, min, max)
+				metatable.State = value
 				callback(value)
 			end
 		end)
@@ -2053,15 +2038,46 @@ do
 		button.Title.Text = title
 	end
 	
-	function section:updateToggle(toggle, title, value, callbackvalue)
+	function section:updateToggle(toggle, title, value)
+		local metatoggle = toggle
+		toggle = toggle.Frame
+		metatoggle.State = value
+
+		
+		local position = {
+			In = UDim2.new(0, 2, 0.5, -6),
+			Out = UDim2.new(0, 20, 0.5, -6)
+		}
+		
+		local frame = toggle.Button.Frame
+		value = value and "Out" or "In"
+		
+		if title then
+			toggle.Title.Text = title
+		end
+		
+		utility:Tween(frame, {
+			Size = UDim2.new(1, -22, 1, -9),
+			Position = position[value] + UDim2.new(0, 0, 0, 2.5)
+		}, 0.2)
+		
+		wait(0.1)
+		utility:Tween(frame, {
+			Size = UDim2.new(1, -22, 1, -4),
+			Position = position[value]
+		}, 0.1)
+	end
+
+	function section:LoadToggle(toggle, title, value)
 		local thecall = toggle.Callback
 		local metatoggle = toggle
 		toggle = toggle.Frame
 		metatoggle.State = value
 
-		if thecall and callbackvalue ~= nil and callbackvalue == true then
-			thecall(metatoggle.State)
+		if thecall ~= nil then
+			thecall(value)
 		end
+		
 		local position = {
 			In = UDim2.new(0, 2, 0.5, -6),
 			Out = UDim2.new(0, 20, 0.5, -6)
@@ -2087,7 +2103,26 @@ do
 	end
 	
 	function section:updateTextbox(textbox, title, value)
-		textbox = self:getModule(textbox)
+		local metatextbox = textbox
+		textbox = metatextbox.Frame
+		
+		if title then
+			textbox.Title.Text = title
+		end
+		
+		if value then
+			textbox.Button.Textbox.Text = value
+		end
+		
+	end
+
+	function section:LoadTextbox(textbox, title, value)
+		local metatextbox = textbox
+		textbox = metatextbox.Frame
+
+		if metatextbox.Callback ~= nil then
+			metatextbox.Callback(value)
+		end
 		
 		if title then
 			textbox.Title.Text = title
@@ -2100,7 +2135,8 @@ do
 	end
 	
 	function section:updateKeybind(keybind, title, key)
-		keybind = self:getModule(keybind)
+		local metakeybind = keybind
+		keybind = metakeybind.Frame
 		
 		local text = keybind.Button.Text
 		local bind = self.binds[keybind]
@@ -2114,9 +2150,12 @@ do
 		end
 			
 		if key then
+			key = Enum.KeyCode[key] or key
 			self.binds[keybind].connection = utility:BindToKey(key, bind.callback)
+			metakeybind.State = key.Name
 			text.Text = key.Name
 		else
+			metakeybind.State = "None"
 			text.Text = "None"
 		end
 	end
@@ -2161,30 +2200,24 @@ do
 	end
 	
 	function section:updateSlider(slider, title, value, min, max, lvalue)
-		local metatoggle = slider
-		local thecall = slider.Callback
+		local metaslider = slider
 		slider = slider.Frame
-		value = value or min
 		
 		if title then
 			slider.Title.Text = title
-		end
-		
-		if thecall ~= nil then
-			thecall(value)
 		end
 		
 		local bar = slider.Slider.Bar
 		local percent = (mouse.X - bar.AbsolutePosition.X) / bar.AbsoluteSize.X
 		
 		if value then -- support negative ranges
-			value = tonumber(value)
 			percent = (value - min) / (max - min)
 		end
 		
 		percent = math.clamp(percent, 0, 1)
 		value = value or math.floor(min + (max - min) * percent)
 		
+		metaslider.State = value
 		slider.TextBox.Text = value
 		utility:Tween(bar.Fill, {Size = UDim2.new(percent, 0, 1, 0)}, 0.1)
 		
@@ -2192,8 +2225,37 @@ do
 			utility:Pop(slider, 10)
 		end
 		
-		metatoggle.State = value
 		return value
+	end
+
+	function section:LoadSlider(slider, title, value)
+		local metaslider = slider
+		local min = metaslider.Min
+		local max = metaslider.Max
+		local thecall = metaslider.Callback
+		slider = slider.Frame
+		
+		if title then
+			slider.Title.Text = title
+		end
+		
+		local bar = slider.Slider.Bar
+		local percent = (mouse.X - bar.AbsolutePosition.X) / bar.AbsoluteSize.X
+		
+		if value then -- support negative ranges
+			percent = (value - min) / (max - min)
+		end
+		
+		percent = math.clamp(percent, 0, 1)
+		value = value or math.floor(min + (max - min) * percent)
+		metaslider.State = value
+		
+		slider.TextBox.Text = value
+		if thecall ~= nil then
+			thecall(value)
+		end
+		utility:Tween(bar.Fill, {Size = UDim2.new(percent, 0, 1, 0)}, 0.1)
+
 	end
 	
 	function section:updateDropdown(dropdown, title, list)
@@ -2278,5 +2340,34 @@ do
 	end
 end
 
-print("new5")
+local art = [[
+         /\/\          ____        _                  _                            
+        /  \ \      U |  _"\ u U  /"\  u     ___     |"|                           
+       / /\ \ \      \| |_) |/  \/ _ \/     |_"_|  U | | u                        
+       \/ /\/ /       |  _ <    / ___ \      | |    \| |/__                       
+       / /\/ /\       |_| \_\  /_/   \_\   U/| |\u   |_____|                      
+      / /\ \/\ \      //   \\_  \\    >>.-,_|___|_,-.//  \\                       
+     / / /\ \ \ \    (__)  (__)(__)  (__)\_)-' '-(_/(_")("_)                      
+  /\/ / / /\ \ \ \/\
+ /  \/ / /  \ \ \ \ \
+/ /\ \/ /    \ \/\ \ \
+\/ /\/ /      \/ /\/ /                          |'| |'|U |"|u| |U | __")u   
+/ /\/ /\      / /\/ /\                         /| |_| |\\| |\| | \|  _ \/ 
+\ \ \/\ \    / /\ \/ /                         U|  _  |u | |_| |  | |_) | 
+ \ \ \ \ \  / / /\  /                           |_| |_| <<\___/   |____/  
+  \/\ \ \ \/ / / /\/                            //   \\(__) )(   _|| \\_  
+     \ \ \ \/ / /                              (_") ("_)   (__) (__) (__) 
+      \ \/\ \/ /
+       \/ /\/ /
+       / /\/ /\
+       \ \ \/ /
+        \ \  /
+         \/\/⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+]]
+
+-- Split the multiline string into lines and print each line separately
+for line in art:gmatch("[^\r\n]+") do
+    print(line)
+end
+
 return library
