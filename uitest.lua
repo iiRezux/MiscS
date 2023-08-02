@@ -1723,12 +1723,7 @@ do
 				
 				value = self:updateSlider(metatable, nil, metatable.State, min, max, value)
 
-				if callback then
-					callback(metatable.State, function(...)
-						self:updateSlider(metatable, ...)
-					end)
-				end
-
+				callback(metatable.State)
 				
 				utility:Wait()
 			end
@@ -2284,5 +2279,5 @@ do
 	end
 end
 
-print("new13")
+print("new1")
 return library
