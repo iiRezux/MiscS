@@ -1717,7 +1717,7 @@ do
 			while dragging do
 				utility:Tween(circle, {ImageTransparency = 0}, 0.1)
 
-				value = self:updateSlider(metatable, nil, nil, min, max, value)
+				value = self:updateSlider(metatable, nil, metatable.State, min, max)
 
 				metatable.State = tonumber(value)
 
@@ -1732,7 +1732,7 @@ do
 		
 		textbox.FocusLost:Connect(function()
 			if not tonumber(textbox.Text) then
-				value = self:updateSlider(metatable, nil, default or min, min, max)
+				value = self:updateSlider(metatable, nil, metatable.State, min, max)
 				metatable.State = tonumber(value)
 				callback(value)
 			end
@@ -2278,5 +2278,5 @@ do
 	end
 end
 
-print("new7")
+print("new5")
 return library
