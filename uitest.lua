@@ -1893,7 +1893,7 @@ do
 			self:Resize()
 		end)
 		
-		return dropdown
+		return metatable
 	end
 	
 	-- class functions
@@ -2285,5 +2285,5 @@ do
 	end
 end
 
-print("new10")
+print("new11")
 return library
