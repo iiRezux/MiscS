@@ -1704,8 +1704,6 @@ do
 				end)
 			end
 		end
-
-        metatable.State = value
 		
 		self:updateSlider(metatable, nil, value, min, max)
 		
@@ -1719,9 +1717,9 @@ do
 			while dragging do
 				utility:Tween(circle, {ImageTransparency = 0}, 0.1)
 
-				metatable.State = tonumber(value)
-
 				value = self:updateSlider(metatable, nil, nil, min, max, value)
+
+				metatable.State = tonumber(value)
 
 				callback(value)
 				
@@ -1734,8 +1732,8 @@ do
 		
 		textbox.FocusLost:Connect(function()
 			if not tonumber(textbox.Text) then
-				metatable.State = tonumber(value)
 				value = self:updateSlider(metatable, nil, default or min, min, max)
+				metatable.State = tonumber(value)
 				callback(value)
 			end
 		end)
@@ -1746,8 +1744,8 @@ do
 			if not allowed[text] and not tonumber(text) then
 				textbox.Text = text:sub(1, #text - 1)
 			elseif not allowed[text] then	
-				metatable.State = tonumber(text)
 				value = self:updateSlider(metatable, nil, tonumber(text) or value, min, max)
+				metatable.State = value
 				callback(value)
 			end
 		end)
@@ -2163,7 +2161,7 @@ do
 	end
 	
 	function section:updateSlider(slider, title, value, min, max, lvalue)
-		--local metatoggle = slider
+		local metatoggle = slider
 		local thecall = slider.Callback
 		slider = slider.Frame
 		value = value or min
@@ -2194,6 +2192,7 @@ do
 			utility:Pop(slider, 10)
 		end
 		
+		metatoggle.State = value
 		return value
 	end
 	
@@ -2279,5 +2278,5 @@ do
 	end
 end
 
-print("new6")
+print("new7")
 return library
