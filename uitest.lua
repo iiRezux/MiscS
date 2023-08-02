@@ -1841,14 +1841,6 @@ do
 				})
 			})
 		})
-		
-		table.insert(self.modules, dropdown)
-		--self:Resize()
-		
-		local search = dropdown.Search
-		local focused
-		
-		list = list or {}
 
 		local metatable = {
 			Title = title,
@@ -1858,6 +1850,14 @@ do
 			State = default or false,
 			Type = "Dropdown"
 		}
+		
+		table.insert(self.modules, metatable)
+		--self:Resize()
+		
+		local search = dropdown.Search
+		local focused
+		
+		list = list or {}
 		
 		search.Button.MouseButton1Click:Connect(function()
 			if search.Button.Rotation == 0 then
@@ -1882,6 +1882,7 @@ do
 		search.TextBox:GetPropertyChangedSignal("Text"):Connect(function()
 			if focused then
 				local list = utility:Sort(search.TextBox.Text, list)
+				print("choosed: "..search.TextBox.Text)
 				list = #list ~= 0 and list
 				
 				self:updateDropdown(dropdown, nil, list, callback)
@@ -2280,5 +2281,5 @@ do
 	end
 end
 
-print("new1")
+print("new2")
 return library
