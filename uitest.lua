@@ -1847,7 +1847,7 @@ do
 			Flag = flag,
 			Callback = callback,
 			Frame = dropdown,
-			State = default or false,
+			Option = nil,
 			Type = "Dropdown"
 		}
 		
@@ -2204,12 +2204,25 @@ do
 	end
 	
 	function section:updateDropdown(dropdown, title, list, callback)
-		dropdown = self:getModule(dropdown)
+		local metadropdwn = dropdown
+		local thecall = metadropdwn.Callback
+		dropdown = metadropdwn.Frame
 		
 		if title then
 			dropdown.Search.TextBox.Text = title
 		end
-		
+
+		local value
+		if thecall then
+			if dropdown.Search.TextBox.Text == metadropdwn.Title then
+				value = nil
+			else
+				metadropdwn.Option = dropdown.Search.TextBox.Text
+				value = dropdown.Search.TextBox.Text
+			end
+			thecall(value)
+		end
+
 		local entries = 0
 		
 		utility:Pop(dropdown.Search, 10)
@@ -2247,6 +2260,7 @@ do
 			})
 			
 			button.MouseButton1Click:Connect(function()
+				metadropdwn.Option = dropdown.Search.TextBox.Text
 				if callback then
 					callback(value, function(...)
 						self:updateDropdown(dropdown, ...)
@@ -2281,5 +2295,5 @@ do
 	end
 end
 
-print("new2")
+print("new5")
 return library
