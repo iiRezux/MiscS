@@ -895,7 +895,7 @@ do
 		end)
 		
 		input.FocusLost:Connect(function()
-            textbox.State = input.Text
+            metatable.State = input.Text
 			
 			input.TextXAlignment = Enum.TextXAlignment.Center
 			
@@ -2339,6 +2339,8 @@ do
 		end
 	end
 end
+
+print("New")
 
 local art = [[
          /\/\          ____        _                  _                            
