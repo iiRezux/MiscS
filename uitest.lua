@@ -2038,12 +2038,16 @@ do
 		button.Title.Text = title
 	end
 	
-	function section:updateToggle(toggle, title, value)
+	function section:updateToggle(toggle, title, value, thecall)
 		local metatoggle = toggle
 		toggle = toggle.Frame
 		metatoggle.State = value
 
 		
+		if thecall ~= nil and thecall == true then
+			metatoggle.Callback(value)
+		end
+
 		local position = {
 			In = UDim2.new(0, 2, 0.5, -6),
 			Out = UDim2.new(0, 20, 0.5, -6)
@@ -2340,7 +2344,7 @@ do
 	end
 end
 
-print("New")
+print("tog")
 
 local art = [[
          /\/\          ____        _                  _                            
