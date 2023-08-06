@@ -685,13 +685,8 @@ do
 				TextTransparency = 0.10000000149012
 			})
 		})
-
-		local metatable = {
-			Title = title,
-			Callback = callback
-		}
 		
-		table.insert(self.modules, metatable)
+		table.insert(self.modules, button)
 		--self:Resize()
 		
 		local text = button.Title
@@ -722,7 +717,7 @@ do
 			debounce = false
 		end)
 		
-		return metatable
+		return button
 	end
 	
 	function section:addToggle(title, default, flag, callback)
