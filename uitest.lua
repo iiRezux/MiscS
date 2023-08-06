@@ -685,8 +685,13 @@ do
 				TextTransparency = 0.10000000149012
 			})
 		})
+
+		local metatable = {
+			Title = title,
+			Callback = callback
+		}
 		
-		table.insert(self.modules, button)
+		table.insert(self.modules, metatable)
 		--self:Resize()
 		
 		local text = button.Title
@@ -717,7 +722,7 @@ do
 			debounce = false
 		end)
 		
-		return button
+		return metatable
 	end
 	
 	function section:addToggle(title, default, flag, callback)
@@ -2343,8 +2348,6 @@ do
 		end
 	end
 end
-
-print("tog")
 
 local art = [[
          /\/\          ____        _                  _                            
