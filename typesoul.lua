@@ -1,1 +1,1 @@
-return {"3shikaireroll"}
+return {"3shikaireroll","updatecomingsoon"}
