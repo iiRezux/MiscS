@@ -1,1 +1,1 @@
-return {"lastnightupdate"}
+return {"latenightupdate"}
